@@ -7,7 +7,6 @@ import {
 import { RecentPostsExpandable } from "@/components/home/recent-posts-expandable"
 import { uniqueTagsFromBlogs } from "@/lib/blog-tags"
 import { cn } from "@/lib/utils"
-import { ANALYTICS_CACHE_REVALIDATE_SECONDS } from "@/lib/analytics-config"
 import { getSlugPvMap, getTopBlogViewStats } from "@/lib/analytics-server"
 import { PageViewBeacon } from "@/components/analytics/page-view-beacon"
 import { WebsiteJsonLd } from "@/components/seo/website-json-ld"
@@ -26,8 +25,8 @@ export const metadata: Metadata = {
   },
 }
 
-/** 首页静态再生周期；与 `getTopBlogViewStats` / `getSlugPvMap` 的 unstable_cache 一致 */
-export const revalidate = ANALYTICS_CACHE_REVALIDATE_SECONDS
+/** 首页静态再生周期；与 `lib/analytics-config` 的 ANALYTICS_CACHE_REVALIDATE_SECONDS（120）及读库缓存一致；须为字面量以满足 Next 段配置校验 */
+export const revalidate = 120
 
 export default async function HomePage() {
   const sorted = [...allBlogs].sort(
